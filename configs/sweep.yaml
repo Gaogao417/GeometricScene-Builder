@@ -1,0 +1,100 @@
+timeout_s: 60
+max_parallel_cases: 6
+watchdog_grace_s: 20
+startup_retries: 2
+retry_backoff_s: 2.0
+instances_per_problem: 1
+random_seeds: [1]
+render_images: true
+
+# 正交实验设计：每个约束类型独立测试 + 少量组合
+constraint_recipes:
+  # G0: 纯题设 (基线)
+  - name: baseline_only
+    layout: null
+    shape: []
+
+  # G1: + 布局约束
+  - name: with_orientation
+    layout:
+      triangle_base_horizontal: true
+    shape: []
+
+  # G2: + 角度约束 (两个阈值)
+  - name: angle_min_10
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: angle_min
+        min_deg: 10
+
+  - name: angle_min_15
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: angle_min
+        min_deg: 15
+
+  # G3a: + 边长比约束 (两个阈值)
+  - name: side_ratio_ge_0p3
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: side_ratio
+        min_ratio: 0.3
+
+  - name: side_ratio_ge_0p5
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: side_ratio
+        min_ratio: 0.5
+
+  # G3b: + 高度/底边比约束 (两个阈值)
+  - name: height_base_ge_0p2
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: height_base
+        min_ratio: 0.2
+
+  - name: height_base_ge_0p4
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: height_base
+        min_ratio: 0.4
+
+  # G3c: + 高度/周长比约束 (两个阈值)
+  - name: height_perimeter_ge_0p08
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: height_perimeter
+        min_ratio: 0.08
+
+  - name: height_perimeter_ge_0p15
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: height_perimeter
+        min_ratio: 0.15
+
+  # G4: 组合实验 (可选，验证边际贡献)
+  - name: angle_10_side_0p3
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: angle_min
+        min_deg: 10
+      - type: side_ratio
+        min_ratio: 0.3
+
+  - name: angle_10_height_base_0p2
+    layout:
+      triangle_base_horizontal: true
+    shape:
+      - type: angle_min
+        min_deg: 10
+      - type: height_base
+        min_ratio: 0.2
