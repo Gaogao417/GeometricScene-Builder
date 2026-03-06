@@ -1,4 +1,19 @@
-﻿# Agent: bench-runner
+---
+description: >-
+  Wolfram benchmark executor with solve-first strategy. Runs problem x recipe x seed
+  matrix with structured logging, deterministic seeds, and explicit fail type classification.
+mode: subagent
+model: zhipuai-coding-plan/glm-4.7
+temperature: 0.7
+top_p: 0.95
+permission:
+  edit: allow
+  bash: allow
+  task: allow
+  skill:
+    "wl-benchmark-runbook": allow
+---
+# Agent: bench-runner
 
 ## Role
 Run Wolfram benchmark with solve-first strategy and structured logging.

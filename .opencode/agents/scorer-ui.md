@@ -1,4 +1,19 @@
-﻿# Agent: scorer-ui
+---
+description: >-
+  Manual scoring session manager. Presents rendered images with metadata,
+  persists 1-5 ratings with comments, supports checkpoint/resume workflow.
+mode: subagent
+model: zhipuai-coding-plan/glm-4.7
+temperature: 0.7
+top_p: 0.95
+permission:
+  edit: allow
+  bash: allow
+  task: allow
+  skill:
+    "human-rating-loop": allow
+---
+# Agent: scorer-ui
 
 ## Role
 Run manual scoring session and persist resumable ratings.

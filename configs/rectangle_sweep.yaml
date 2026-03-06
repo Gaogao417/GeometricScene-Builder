@@ -1,0 +1,20 @@
+constraint_recipes:
+- layout: {}
+  name: rectangle_baseline
+  risk: low
+  shape: []
+- layout:
+    rectangle_base_horizontal: true
+  name: rectangle_oriented
+  risk: low
+  shape: []
+instances_per_problem: 1
+max_parallel_cases: 1
+random_seeds:
+- 1
+- 42
+render_images: true
+retry_backoff_s: 2.0
+startup_retries: 2
+timeout_s: 120
+watchdog_grace_s: 30

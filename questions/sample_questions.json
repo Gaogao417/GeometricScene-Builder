@@ -1,0 +1,52 @@
+{
+  "description": "Signature生成Benchmark测试题目集",
+  "source": "上海市八年级数学期末模拟试题",
+  "questions": [
+    {
+      "id": 1,
+      "number": 1,
+      "type": "选择题",
+      "difficulty": "简单",
+      "text": "已知直角三角形的两条直角边分别为3和4，则斜边的长度为（  ）",
+      "options": ["A. 5", "B. 6", "C. 7", "D. 8"],
+      "answer": "A",
+      "solution": "根据勾股定理，斜边²=3²+4²=9+16=25，所以斜边=5"
+    },
+    {
+      "id": 2,
+      "number": 2,
+      "type": "填空题",
+      "difficulty": "中档",
+      "text": "若x²-5x+6=0，则x₁+x₂=____，x₁·x₂=____",
+      "answer": "5，6",
+      "solution": "根据韦达定理，对于方程ax²+bx+c=0，x₁+x₂=-b/a=5，x₁·x₂=c/a=6"
+    },
+    {
+      "id": 3,
+      "number": 3,
+      "type": "计算题",
+      "difficulty": "中档",
+      "text": "计算：√12 + √27 - √3",
+      "answer": "4√3",
+      "solution": "√12=2√3，√27=3√3，所以2√3+3√3-√3=4√3"
+    },
+    {
+      "id": 4,
+      "number": 4,
+      "type": "解答题",
+      "difficulty": "中档",
+      "text": "已知一次函数y=kx+b的图像经过点A(1,3)和B(3,7)，求这个一次函数的解析式。",
+      "answer": "y=2x+1",
+      "solution": "将A(1,3)代入：k+b=3；将B(3,7)代入：3k+b=7。解方程组得k=2，b=1，所以y=2x+1"
+    },
+    {
+      "id": 5,
+      "number": 5,
+      "type": "证明题",
+      "difficulty": "难题",
+      "text": "如图，在平行四边形ABCD中，E、F分别是AB、CD的中点。求证：四边形DEBF是平行四边形。",
+      "answer": "证明见解析",
+      "solution": "∵四边形ABCD是平行四边形，∴AB∥CD，AB=CD。∵E、F分别是AB、CD的中点，∴BE=DF=½AB=½CD。又∵BE∥DF，∴四边形DEBF是平行四边形（一组对边平行且相等的四边形是平行四边形）"
+    }
+  ]
+}

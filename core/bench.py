@@ -2,9 +2,9 @@
 """
 Geometric Scene Benchmark Runner
 
-**定位**: bench-runner agent 的执行工具  
-**调用方**: geo-orchestrator (通过 geo-tools.ts)  
-**输入**: 
+**定位**: bench-runner agent 的执行工具
+**调用方**: geo-orchestrator (通过 geo-tools.ts)
+**输入**:
   - data/problems.jsonl (由 problem-collector agent 生成)
   - configs/sweep.yaml (由 problem-constraint-designer agent 生成)
 **输出**:
@@ -13,10 +13,12 @@ Geometric Scene Benchmark Runner
 
 Usage: python bench.py --config <sweep.yaml> --problems <problems.jsonl> --out <output_dir>
 """
+
 import json
 import time
 import os
 import sys
+import shutil
 import threading
 import multiprocessing as mp
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -27,7 +29,7 @@ from wolframclient.language.expression import WLSymbol
 import yaml
 
 # Import constraint builders (core library)
-from core import BuildOrientation, AssembleConstraints
+from core import BuildOrientation, AssembleConstraints, AssembleQualitativeConstraints
 
 try:
     from wolframclient.evaluation import WolframLanguageSession
@@ -54,22 +56,47 @@ def wl_to_python(val: Any) -> Any:
 
 
 def load_problems(problems_path: str) -> List[Dict]:
-    """Load problems from JSONL file."""
-    problems = []
-    with open(problems_path, 'r', encoding='utf-8') as f:
-        for line in f:
+    """Load problems from JSONL file or JSON array/object."""
+    with open(problems_path, "r", encoding="utf-8") as f:
+        content = f.read().strip()
+
+    # Try JSONL format first (each line is a JSON object)
+    # JSONL files have multiple lines, each starting with '{'
+    lines = content.split("\n")
+    if len(lines) > 1 and all(
+        line.strip().startswith("{") for line in lines if line.strip()
+    ):
+        problems = []
+        for line in lines:
             if line.strip():
                 problems.append(json.loads(line))
-    return problems
+        return problems
+
+    # Parse as JSON array or single object
+    data = json.loads(content)
+    if isinstance(data, list):
+        return data
+    elif isinstance(data, dict):
+        return [data]
+    else:
+        raise ValueError(f"Expected JSON array or object, got {type(data).__name__}")
 
 
 def load_config(config_path: str) -> Dict:
     """Load sweep configuration from YAML file."""
-    with open(config_path, 'r', encoding='utf-8') as f:
+    with open(config_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
-def run_single_case(session: WolframLanguageSession, problem: Dict, recipe: Dict, seed: int, timeout: int, render: bool, out_dir: Path) -> Dict:
+def run_single_case(
+    session: WolframLanguageSession,
+    problem: Dict,
+    recipe: Dict,
+    seed: int,
+    timeout: int,
+    render: bool,
+    out_dir: Path,
+) -> Dict:
     """Run a single benchmark case. Pass Python/wl types directly to evaluate()."""
     try:
         problem_id = problem["id"]
@@ -86,21 +113,36 @@ def run_single_case(session: WolframLanguageSession, problem: Dict, recipe: Dict
 
         # Pipeline: 组装约束 (扁平化，无层级概念)
         all_constraints = []
-        
+
         # 1. 布局约束 (可选)
         layout = recipe.get("layout") or {}
         if layout.get("triangle_base_horizontal"):
             all_constraints.append(BuildOrientation(points_wl, base_edge_wl))
-        
+
+        # 1.5. 定性约束 (可选)
+        # 定性约束需要从 problem 的 qualitative_objects 字段获取几何对象
+        # 约束对象必须来自题干给定的几何对象（不能是推理出的）
+        qualitative_configs = recipe.get("qualitative")
+        if qualitative_configs:
+            qualitative_objects = problem.get("qualitative_objects", {})
+            qualitative_constraints = AssembleQualitativeConstraints(
+                qualitative_configs, qualitative_objects, points_raw
+            )
+            all_constraints.extend(qualitative_constraints)
+
         # 2. 形状约束 (正交组合，无层级关系)
         shape_configs = recipe.get("shape", [])
-        all_constraints.extend(AssembleConstraints(points_wl, base_edge_wl, shape_configs))
-        
+        all_constraints.extend(
+            AssembleConstraints(points_wl, base_edge_wl, shape_configs)
+        )
+
         layers_wl = wl.List(*all_constraints)
 
         # Unique image path per case: out_dir/images/{problem_id}_{recipe_name}_{seed}.png
         image_path_rel = f"images/{problem_id}_{recipe_name}_{seed}.png"
-        image_path_abs = (out_dir / image_path_rel).resolve().as_posix() if render else ""
+        image_path_abs = (
+            (out_dir / image_path_rel).resolve().as_posix() if render else ""
+        )
 
         # Build GeometricScene code for reproducibility (for debugging/failure analysis)
         # This allows copy-pasting into Mathematica to reproduce the exact scene
@@ -118,7 +160,15 @@ def run_single_case(session: WolframLanguageSession, problem: Dict, recipe: Dict
 
         result = session.evaluate(
             Global.SolveSingleCase(
-                problem_id, recipe_name, points_wl, base_hyp_wl, layers_wl, seed, timeout, render, image_path_abs
+                problem_id,
+                recipe_name,
+                points_wl,
+                base_hyp_wl,
+                layers_wl,
+                seed,
+                timeout,
+                render,
+                image_path_abs,
             )
         )
 
@@ -140,13 +190,13 @@ def run_single_case(session: WolframLanguageSession, problem: Dict, recipe: Dict
 
     except Exception as e:
         return {
-            "problem_id": problem['id'],
-            "recipe_name": recipe['name'],
+            "problem_id": problem["id"],
+            "recipe_name": recipe["name"],
             "seed": seed,
             "success": False,
             "fail_type": "runtime_error",
             "solve_time_s": 0,
-            "message": str(e)
+            "message": str(e),
         }
 
 
@@ -172,19 +222,21 @@ def _run_single_case_worker(
                 session.evaluate(wlexpr(f'Get["{wl_dir}/bench_core.wl"]'))
                 # Session warm-up to reduce first-eval jitter.
                 session.evaluate(wlexpr("1+1"))
-                result = run_single_case(session, problem, recipe, seed, timeout, render, Path(out_dir))
+                result = run_single_case(
+                    session, problem, recipe, seed, timeout, render, Path(out_dir)
+                )
             break
         except Exception as e:
             last_error = str(e)
             if attempt >= startup_retries:
                 result = {
-                    "problem_id": problem['id'],
-                    "recipe_name": recipe['name'],
+                    "problem_id": problem["id"],
+                    "recipe_name": recipe["name"],
                     "seed": seed,
                     "success": False,
                     "fail_type": "worker_error",
                     "solve_time_s": 0,
-                    "message": f"session startup failed after {startup_retries} attempts: {last_error}"
+                    "message": f"session startup failed after {startup_retries} attempts: {last_error}",
                 }
             else:
                 time.sleep(retry_backoff_s * attempt)
@@ -224,7 +276,7 @@ def run_single_case_with_watchdog(
             str(out_dir),
             startup_retries,
             retry_backoff_s,
-        )
+        ),
     )
     proc.start()
     proc.join(timeout=hard_timeout_s)
@@ -237,38 +289,38 @@ def run_single_case_with_watchdog(
             proc.join(timeout=2)
 
         return {
-            "problem_id": problem['id'],
-            "recipe_name": recipe['name'],
+            "problem_id": problem["id"],
+            "recipe_name": recipe["name"],
             "seed": seed,
             "success": False,
             "fail_type": "host_watchdog_timeout",
             "solve_time_s": float(timeout),
             "solver_wall_time_s": float(hard_timeout_s),
-            "message": f"Host watchdog timeout after {hard_timeout_s}s"
+            "message": f"Host watchdog timeout after {hard_timeout_s}s",
         }
 
     if proc.exitcode != 0:
         return {
-            "problem_id": problem['id'],
-            "recipe_name": recipe['name'],
+            "problem_id": problem["id"],
+            "recipe_name": recipe["name"],
             "seed": seed,
             "success": False,
             "fail_type": "worker_crash",
             "solve_time_s": 0,
-            "message": f"Worker exited with code {proc.exitcode}"
+            "message": f"Worker exited with code {proc.exitcode}",
         }
 
     if not result_queue.empty():
         return result_queue.get()
 
     return {
-        "problem_id": problem['id'],
-        "recipe_name": recipe['name'],
+        "problem_id": problem["id"],
+        "recipe_name": recipe["name"],
         "seed": seed,
         "success": False,
         "fail_type": "worker_no_result",
         "solve_time_s": 0,
-        "message": "Worker exited without result payload"
+        "message": "Worker exited without result payload",
     }
 
 
@@ -278,7 +330,11 @@ def main():
     parser = argparse.ArgumentParser(description="Geometric Scene Benchmark Runner")
     parser.add_argument("--config", required=True, help="Sweep configuration YAML path")
     parser.add_argument("--problems", required=True, help="Problems JSONL path")
-    parser.add_argument("--out", required=False, help="Output directory (default: outputs/run_TIMESTAMP)")
+    parser.add_argument(
+        "--out",
+        required=False,
+        help="Output directory (default: outputs/run_TIMESTAMP)",
+    )
     args = parser.parse_args()
 
     # Validate input files
@@ -286,11 +342,22 @@ def main():
     problems_path = Path(args.problems)
 
     if not config_path.exists():
-        print(json.dumps({"status": "error", "message": f"Config file not found: {config_path}"}))
+        print(
+            json.dumps(
+                {"status": "error", "message": f"Config file not found: {config_path}"}
+            )
+        )
         sys.exit(1)
 
     if not problems_path.exists():
-        print(json.dumps({"status": "error", "message": f"Problems file not found: {problems_path}"}))
+        print(
+            json.dumps(
+                {
+                    "status": "error",
+                    "message": f"Problems file not found: {problems_path}",
+                }
+            )
+        )
         sys.exit(1)
 
     # Load config and problems
@@ -306,6 +373,12 @@ def main():
 
     out_dir.mkdir(parents=True, exist_ok=True)
     (out_dir / "images").mkdir(exist_ok=True)
+
+    inputs_dir = out_dir / "inputs"
+    inputs_dir.mkdir(exist_ok=True)
+    shutil.copy2(config_path, inputs_dir / "sweep.yaml")
+    shutil.copy2(problems_path, inputs_dir / "problems.jsonl")
+    print(f"Input files backed up to {inputs_dir}", flush=True)
 
     wl_dir = Path(__file__).resolve().parent.parent / "wl"
     if not wl_dir.exists():
@@ -323,11 +396,11 @@ def main():
     results_count = 0
 
     wl_kernel = "D:/Program Files/Wolfram Research/Wolfram/14.3/wolfram.exe"
-    timeout = config.get('timeout_s', 60)
-    render_images = config.get('render_images', True)
-    seeds = config.get('random_seeds', [1])
-    recipes = config.get('constraint_recipes', [])
-    watchdog_grace_s = int(config.get('watchdog_grace_s', 20))
+    timeout = config.get("timeout_s", 60)
+    render_images = config.get("render_images", True)
+    seeds = config.get("random_seeds", [1])
+    recipes = config.get("constraint_recipes", [])
+    watchdog_grace_s = int(config.get("watchdog_grace_s", 20))
     hard_timeout_s = timeout + watchdog_grace_s
 
     total_cases = len(problems) * len(recipes) * len(seeds)
@@ -342,27 +415,43 @@ def main():
     retry_backoff_s = float(config.get("retry_backoff_s", 2.0))
     max_parallel_cases = max(1, min(max_parallel_cases, total_cases))
 
-    print(f"Running {len(problems)} problems × {len(recipes)} recipes × {len(seeds)} seeds = {total_cases} cases", flush=True)
+    print(
+        f"Running {len(problems)} problems × {len(recipes)} recipes × {len(seeds)} seeds = {total_cases} cases",
+        flush=True,
+    )
     print(f"Timeout: {timeout}s, HostWatchdog: {hard_timeout_s}s", flush=True)
-    print(f"Parallel: {max_parallel_cases}, StartupRetries: {startup_retries}", flush=True)
+    print(
+        f"Parallel: {max_parallel_cases}, StartupRetries: {startup_retries}", flush=True
+    )
     print(f"Render: {render_images}", flush=True)
     print(f"Output: {out_dir}", flush=True)
     print(f"Results will be streamed to: {results_path}", flush=True)
     print(flush=True)
 
     def run_case(idx: int, problem: Dict, recipe: Dict, seed: int):
-        print(f"[{idx}/{total_cases}] {problem['id']} × {recipe['name']} (seed={seed})", flush=True)
+        print(
+            f"[{idx}/{total_cases}] {problem['id']} × {recipe['name']} (seed={seed})",
+            flush=True,
+        )
         case_start = time.time()
         stop_heartbeat = threading.Event()
 
         def heartbeat():
             while not stop_heartbeat.wait(5):
                 elapsed = time.time() - case_start
-                over = " [超过配置timeout，仍在等待Wolfram返回]" if elapsed > timeout else ""
-                hard_over = " [已超过host watchdog阈值，将终止子进程]" if elapsed > hard_timeout_s else ""
+                over = (
+                    " [超过配置timeout，仍在等待Wolfram返回]"
+                    if elapsed > timeout
+                    else ""
+                )
+                hard_over = (
+                    " [已超过host watchdog阈值，将终止子进程]"
+                    if elapsed > hard_timeout_s
+                    else ""
+                )
                 print(
                     f"  ... still running, wall={elapsed:.1f}s (timeout={timeout}s, hard={hard_timeout_s}s){over}{hard_over}",
-                    flush=True
+                    flush=True,
                 )
 
         hb_thread = threading.Thread(target=heartbeat, daemon=True)
@@ -393,15 +482,17 @@ def main():
             for idx, (problem, recipe, seed) in enumerate(all_cases, start=1):
                 _, wall, result = run_case(idx, problem, recipe, seed)
                 status = "OK" if result.get("success") else "FAIL"
-                t = result.get('solve_time_s', 'N/A')
-                fail = result.get('fail_type', '')
+                t = result.get("solve_time_s", "N/A")
+                fail = result.get("fail_type", "")
                 build_t = result.get("scene_build_time_s", "N/A")
                 solver_wall_t = result.get("solver_wall_time_s", "N/A")
                 print(
                     f"  {status} solve={t}s build={build_t}s solver_wall={solver_wall_t}s wall={wall:.1f}s {fail}",
-                    flush=True
+                    flush=True,
                 )
-                results_file.write(json.dumps(result, ensure_ascii=False, default=_json_default) + "\n")
+                results_file.write(
+                    json.dumps(result, ensure_ascii=False, default=_json_default) + "\n"
+                )
                 results_file.flush()
                 print(flush=True)
         else:
@@ -414,26 +505,29 @@ def main():
                     idx, wall, result = future.result()
                     results_count += 1
                     status = "OK" if result.get("success") else "FAIL"
-                    t = result.get('solve_time_s', 'N/A')
-                    fail = result.get('fail_type', '')
+                    t = result.get("solve_time_s", "N/A")
+                    fail = result.get("fail_type", "")
                     build_t = result.get("scene_build_time_s", "N/A")
                     solver_wall_t = result.get("solver_wall_time_s", "N/A")
                     print(
                         f"  [{idx}/{total_cases}] {status} solve={t}s build={build_t}s solver_wall={solver_wall_t}s wall={wall:.1f}s {fail}",
-                        flush=True
+                        flush=True,
                     )
-                    results_file.write(json.dumps(result, ensure_ascii=False, default=_json_default) + "\n")
+                    results_file.write(
+                        json.dumps(result, ensure_ascii=False, default=_json_default)
+                        + "\n"
+                    )
                     results_file.flush()
                     print(flush=True)
 
     print(f"Results saved to {results_path}", flush=True)
 
     # Return success
-    print(json.dumps({
-        "status": "ok",
-        "run_dir": str(out_dir),
-        "total_cases": total_cases
-    }))
+    print(
+        json.dumps(
+            {"status": "ok", "run_dir": str(out_dir), "total_cases": total_cases}
+        )
+    )
 
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ def main():
     check_file(Path("data"), "data/")
     check_file(Path("configs"), "configs/")
     check_file(Path("wl"), "wl/")
-    check_file(Path("scripts"), "scripts/")
+    check_file(Path("scripts"), "core/")
     check_file(Path("app"), "app/")
 
     # Check data files
@@ -41,9 +41,9 @@ def main():
     # Check Python scripts
     print()
     print("Python scripts:")
-    check_file(Path("scripts/bench.py"), "bench.py")
-    check_file(Path("scripts/report.py"), "report.py")
-    check_file(Path("scripts/analyze.py"), "analyze.py")
+    check_file(Path("core/bench.py"), "bench.py")
+    check_file(Path("core/report.py"), "report.py")
+    check_file(Path("core/analyze.py"), "analyze.py")
     check_file(Path("requirements.txt"), "requirements.txt")
 
     # Check Streamlit app
@@ -96,7 +96,7 @@ def main():
     print("Next steps:")
     print("1. Install Python packages: pip install -r requirements.txt")
     print("2. Ensure Wolfram Engine is running")
-    print("3. Run test: python scripts/bench.py --config configs/sweep.yaml --problems data/problems.jsonl")
+    print("3. Run test: python core/bench.py --config configs/sweep.yaml --problems data/problems.jsonl")
 
 if __name__ == "__main__":
     main()

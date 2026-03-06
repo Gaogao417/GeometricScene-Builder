@@ -3,6 +3,7 @@
 Generate MD and HTML reports from benchmark results
 Usage: python report.py --run_dir <run_directory>
 """
+
 import json
 import sys
 from pathlib import Path
@@ -14,7 +15,7 @@ def load_results(run_dir: Path) -> List[Dict]:
     """Load results from results.jsonl."""
     results_path = run_dir / "results.jsonl"
     results = []
-    with open(results_path, 'r', encoding='utf-8') as f:
+    with open(results_path, "r", encoding="utf-8") as f:
         for line in f:
             if line.strip():
                 results.append(json.loads(line))
@@ -25,8 +26,8 @@ def image_to_base64(img_path: Path) -> str:
     """Convert image to base64 for HTML embedding."""
     if not img_path.exists():
         return ""
-    with open(img_path, 'rb') as f:
-        return base64.b64encode(f.read()).decode('utf-8')
+    with open(img_path, "rb") as f:
+        return base64.b64encode(f.read()).decode("utf-8")
 
 
 def generate_markdown(results: List[Dict], run_dir: Path) -> str:
@@ -35,7 +36,7 @@ def generate_markdown(results: List[Dict], run_dir: Path) -> str:
 
 **Run Directory:** {run_dir}
 **Total Cases:** {len(results)}
-**Successful:** {sum(1 for r in results if r.get('success'))}
+**Successful:** {sum(1 for r in results if r.get("success"))}
 
 ## Results Table
 
@@ -44,20 +45,20 @@ def generate_markdown(results: List[Dict], run_dir: Path) -> str:
 """
 
     for r in results:
-        problem_id = r.get('problem_id', 'N/A')
-        recipe = r.get('recipe_name', 'N/A')
-        seed = r.get('seed', 'N/A')
-        success = r.get('success', False)
-        time_s = r.get('solve_time_s', 'N/A')
-        fail_type = r.get('fail_type', '')
-        image_path = r.get('image_path', '')
+        problem_id = r.get("problem_id", "N/A")
+        recipe = r.get("recipe_name", "N/A")
+        seed = r.get("seed", "N/A")
+        success = r.get("success", False)
+        time_s = r.get("solve_time_s", "N/A")
+        fail_type = r.get("fail_type", "")
+        image_path = r.get("image_path", "")
 
         success_mark = "✓" if success else "✗"
         fail_str = fail_type if not success else ""
 
         if image_path:
-            img_rel = Path(image_path).relative_to(run_dir)
-            img_link = f"![img]({img_rel})"
+            # image_path is relative to run_dir, use it directly
+            img_link = f"![img]({image_path})"
         else:
             img_link = "-"
 
@@ -88,7 +89,7 @@ def generate_html(results: List[Dict], run_dir: Path) -> str:
     <h1>Geometric Scene Benchmark Report</h1>
     <p><strong>Run Directory:</strong> {run_dir}</p>
     <p><strong>Total Cases:</strong> {len(results)}</p>
-    <p><strong>Successful:</strong> {sum(1 for r in results if r.get('success'))}</p>
+    <p><strong>Successful:</strong> {sum(1 for r in results if r.get("success"))}</p>
 
     <h2>Results Table</h2>
     <table>
@@ -107,13 +108,13 @@ def generate_html(results: List[Dict], run_dir: Path) -> str:
 """
 
     for r in results:
-        problem_id = r.get('problem_id', 'N/A')
-        recipe = r.get('recipe_name', 'N/A')
-        seed = r.get('seed', 'N/A')
-        success = r.get('success', False)
-        time_s = r.get('solve_time_s', 'N/A')
-        fail_type = r.get('fail_type', '')
-        image_path = r.get('image_path', '')
+        problem_id = r.get("problem_id", "N/A")
+        recipe = r.get("recipe_name", "N/A")
+        seed = r.get("seed", "N/A")
+        success = r.get("success", False)
+        time_s = r.get("solve_time_s", "N/A")
+        fail_type = r.get("fail_type", "")
+        image_path = r.get("image_path", "")
 
         success_class = "success" if success else "fail"
         success_mark = "✓" if success else "✗"
@@ -156,12 +157,23 @@ def main():
     run_dir = Path(args.run_dir)
 
     if not run_dir.exists():
-        print(json.dumps({"status": "error", "message": f"Run directory not found: {run_dir}"}))
+        print(
+            json.dumps(
+                {"status": "error", "message": f"Run directory not found: {run_dir}"}
+            )
+        )
         sys.exit(1)
 
     results_path = run_dir / "results.jsonl"
     if not results_path.exists():
-        print(json.dumps({"status": "error", "message": f"Results file not found: {results_path}"}))
+        print(
+            json.dumps(
+                {
+                    "status": "error",
+                    "message": f"Results file not found: {results_path}",
+                }
+            )
+        )
         sys.exit(1)
 
     # Load results
@@ -175,10 +187,10 @@ def main():
     md_path = run_dir / "report.md"
     html_path = run_dir / "report.html"
 
-    with open(md_path, 'w', encoding='utf-8') as f:
+    with open(md_path, "w", encoding="utf-8") as f:
         f.write(md)
 
-    with open(html_path, 'w', encoding='utf-8') as f:
+    with open(html_path, "w", encoding="utf-8") as f:
         f.write(html)
 
     print(f"Reports generated:")
@@ -186,11 +198,7 @@ def main():
     print(f"  HTML: {html_path}")
 
     # Output JSON result
-    print(json.dumps({
-        "status": "ok",
-        "report": str(md_path),
-        "html": str(html_path)
-    }))
+    print(json.dumps({"status": "ok", "report": str(md_path), "html": str(html_path)}))
 
 
 if __name__ == "__main__":

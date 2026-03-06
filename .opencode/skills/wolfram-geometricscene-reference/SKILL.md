@@ -174,10 +174,53 @@ GeometricAssertion[{a, b, c}, "Distinct"]
 | `RegionMeasure[reg]` | 测度 | 1D/2D 测度 |
 | `PolygonAngle[poly, p]` | 多边形角 | 顶点 p 处的内角 |
 
-### 三角形相关
+### TriangleCenter（三角形中心）
+
+**签名**：`TriangleCenter[tri, type]` 或 `TriangleCenter[tri]`（默认返回重心）
+
+**关键**：`tri` 必须是**三角形**，与 TriangleMeasurement 使用相同的三角形形式。
+
+| tri 合法形式 | 说明 |
+|-------------|------|
+| `{p1, p2, p3}` | 三点列表（隐含三角形） |
+| `Triangle[{p1, p2, p3}]` | 显式三角形 |
+| `Polygon[{p1, p2, p3}]` | 多边形（三顶点） |
+
+**type 取值**：
+
+| type | 含义 | 别名 |
+|------|------|------|
+| `"Centroid"` | 重心（三条中线交点） | 默认值 |
+| `"Circumcenter"` | 外心（外接圆圆心） | |
+| `"Incenter"` | 内心（内切圆圆心） | |
+| `"Orthocenter"` | 垂心（三条高交点） | |
+| `"NinePointCenter"` | 九点圆圆心 | |
+| `"SymmedianPoint"` | 陪位重心 | |
+| `{"Foot", p}` | 从顶点 p 出发的高与对边的交点 | |
+| `{"Midpoint", p}` | 顶点 p 对边的中点 | |
+| `{"Excenter", p}` | 顶点 p 对侧的旁切圆圆心 | |
+| `{"AngleBisectingCevianEndpoint", p}` | 顶点 p 的角平分线与对边交点 | |
+| `{"CevianEndpoint", center, p}` | 过顶点 p 和指定中心的塞瓦线与对边交点 | |
+
+**示例**：
+```wl
+(* 重心 *)
+G == TriangleCenter[{B, P, Q}, "Centroid"]
+G == TriangleCenter[{B, P, Q}]  (* 等价写法 *)
+
+(* 内心 *)
+I == TriangleCenter[{A, B, C}, "Incenter"]
+
+(* 外心 *)
+O == TriangleCenter[Triangle[{A, B, C}], "Circumcenter"]
+
+(* 顶点 A 的高与对边的交点（垂足） *)
+H = TriangleCenter[{A, B, C}, {"Foot", A}]
+```
+
+### 三角形构造与其他函数
 | 函数 | 签名 | 说明 |
 |------|------|------|
-| `TriangleCenter[{p,q,r}, spec]` | 三角形中心 | "Circumcenter", "Incenter", "Centroid" 等 |
 | `TriangleConstruct[{p,q,r}, spec]` | 三角形构造 | "Incircle", "Circumcircle", "Altitude" 等 |
 | `TriangleMeasurement[tri, type]` | 三角形测量 | 见上文 |
 
@@ -211,6 +254,19 @@ EuclideanDistance[a, b] == EuclideanDistance[a, c]
 (* 而非 AB == AC，除非 AB、AC 在场景中已定义为量 *)
 ```
 
+### 错误 5：重心使用坐标计算而非 TriangleCenter
+```wl
+(* BAD: 在 GeometricScene 中使用坐标运算 *)
+G == (B + P + Q)/3   (* 这不是有效的几何约束语法 *)
+
+(* GOOD: 使用 TriangleCenter *)
+G == TriangleCenter[{B, P, Q}, "Centroid"]
+(* 或简化为 *)
+G == TriangleCenter[{B, P, Q}]
+```
+
+**原因**：在 GeometricScene 的符号求解中，点不是坐标值，不能直接进行向量加减。必须使用几何函数如 `TriangleCenter`、`Midpoint` 等。
+
 ---
 
 ## 7. 参考资料
@@ -221,3 +277,4 @@ EuclideanDistance[a, b] == EuclideanDistance[a, c]
 - [GeometricAssertion](https://reference.wolfram.com/language/ref/GeometricAssertion.html)
 - [PlanarAngle](https://reference.wolfram.com/language/ref/PlanarAngle.html)
 - [GeometricScene](https://reference.wolfram.com/language/ref/GeometricScene.html)
+- [TriangleCenter](https://reference.wolfram.com/language/ref/TriangleCenter.html)

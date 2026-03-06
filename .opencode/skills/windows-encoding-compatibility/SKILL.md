@@ -62,25 +62,25 @@ if sys.platform == "win32":
 
 **Example Mistake:**
 ```bash
-cd "e:\geometricScene-builder" && python scripts/verify_setup.py  # FAILS in PowerShell
+cd "e:\geometricScene-builder" && python core/verify_setup.py  # FAILS in PowerShell
 ```
 
 **Correct Approaches:**
 
 **Option A: Use PowerShell semicolon:**
 ```powershell
-cd "e:\geometricScene-builder"; python scripts/verify_setup.py
+cd "e:\geometricScene-builder"; python core/verify_setup.py
 ```
 
 **Option B: Use separate commands:**
 ```bash
 cd "e:\geometricScene-builder"
-python scripts/verify_setup.py
+python core/verify_setup.py
 ```
 
 **Option C: Use explicit working directory:**
 ```powershell
-python scripts/verify_setup.py -WorkingDirectory "e:\geometricScene-builder"
+python core/verify_setup.py -WorkingDirectory "e:\geometricScene-builder"
 ```
 
 ### 3. Hardcoded Absolute Paths Break Cross-Platform

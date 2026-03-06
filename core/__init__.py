@@ -12,6 +12,22 @@ from .constraints import (
     BuildHeightBase,
     BuildHeightPerimeter,
     AssembleConstraints,
+    # 定性约束函数
+    BuildHorizontalLine,
+    BuildClockwise,
+    BuildCounterclockwise,
+    BuildPointInPolygon,
+    BuildPointInTriangle,
+    AssembleQualitativeConstraints,
+)
+from .data_loader import (
+    load_results,
+    load_problems,
+    load_ratings,
+    merge_all,
+    get_failed_cases,
+    get_low_score_cases,
+    summarize_by_recipe,
 )
 
 __all__ = [
@@ -21,4 +37,18 @@ __all__ = [
     "BuildHeightBase",
     "BuildHeightPerimeter",
     "AssembleConstraints",
+    # 定性约束函数
+    "BuildHorizontalLine",
+    "BuildClockwise",
+    "BuildCounterclockwise",
+    "BuildPointInPolygon",
+    "BuildPointInTriangle",
+    "AssembleQualitativeConstraints",
+    "load_results",
+    "load_problems",
+    "load_ratings",
+    "merge_all",
+    "get_failed_cases",
+    "get_low_score_cases",
+    "summarize_by_recipe",
 ]

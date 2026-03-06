@@ -1,0 +1,101 @@
+# 定性约束扫描配置
+# 7 种约束情况，每种 5 组 seed
+
+timeout_s: 60
+max_parallel_cases: 4
+watchdog_grace_s: 20
+startup_retries: 2
+retry_backoff_s: 2.0
+instances_per_problem: 1
+random_seeds: [1, 2, 3, 4, 5]
+render_images: true
+
+# 定性约束实验设计
+constraint_recipes:
+  # G0: 无约束基线
+  - name: baseline
+    risk: low
+    layout: null
+    qualitative: null
+    shape: []
+    
+  # G1a: 单个水平线约束
+  - name: constraint_1a_horizontal
+    risk: low
+    layout:
+      triangle_base_horizontal: false
+    qualitative:
+      type: "horizontal"
+      source: "polygon_edge"
+      index: 0
+      edge_index: 0
+    shape: []
+    
+  # G1b: 单个顺时针约束
+  - name: constraint_1b_clockwise
+    risk: low
+    layout:
+      triangle_base_horizontal: false
+    qualitative:
+      type: "clockwise"
+      source: "polygon"
+      index: 0
+    shape: []
+    
+  # G1c: 单个区域约束（点在多边形内）
+  - name: constraint_1c_region
+    risk: low
+    layout:
+      triangle_base_horizontal: false
+    qualitative:
+      type: "region"
+      source: "polygon"
+      polygon_index: 0
+      point: "first_constructed"
+    shape: []
+    
+  # G2a: 水平线 + 顺时针
+  - name: constraint_2a_horizontal_clockwise
+    risk: low
+    layout:
+      triangle_base_horizontal: false
+    qualitative:
+      - type: "horizontal"
+        source: "polygon_edge"
+        index: 0
+        edge_index: 0
+      - type: "clockwise"
+        source: "polygon"
+        index: 0
+    shape: []
+    
+  # G2b: 水平线 + 区域
+  - name: constraint_2b_horizontal_region
+    risk: low
+    layout:
+      triangle_base_horizontal: false
+    qualitative:
+      - type: "horizontal"
+        source: "polygon_edge"
+        index: 0
+        edge_index: 0
+      - type: "region"
+        source: "polygon"
+        polygon_index: 0
+        point: "first_constructed"
+    shape: []
+    
+  # G2c: 顺时针 + 区域
+  - name: constraint_2c_clockwise_region
+    risk: low
+    layout:
+      triangle_base_horizontal: false
+    qualitative:
+      - type: "clockwise"
+        source: "polygon"
+        index: 0
+      - type: "region"
+        source: "polygon"
+        polygon_index: 0
+        point: "first_constructed"
+    shape: []

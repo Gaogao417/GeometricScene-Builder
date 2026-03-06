@@ -47,7 +47,7 @@ export const GeoToolsPlugin = async () => {
           if (args.out_dir) {
             toolArgs.push("--out", safeResolve(context.worktree, args.out_dir));
           }
-          return runPython(context.worktree, "scripts/bench.py", toolArgs);
+          return runPython(context.worktree, "core/bench.py", toolArgs);
         },
       }),
       build_report: tool({
@@ -57,8 +57,8 @@ export const GeoToolsPlugin = async () => {
         },
         async execute(args, context) {
           const runDir = safeResolve(context.worktree, args.run_dir);
-          const reportOut = runPython(context.worktree, "scripts/report.py", ["--run_dir", runDir]);
-          const analysisOut = runPython(context.worktree, "scripts/analyze.py", ["--run_dir", runDir]);
+          const reportOut = runPython(context.worktree, "core/report.py", ["--run_dir", runDir]);
+          const analysisOut = runPython(context.worktree, "core/analyze.py", ["--run_dir", runDir]);
           // Parse the JSON outputs from scripts to avoid double-stringifying
           const reportParsed = JSON.parse(reportOut);
           const analysisParsed = JSON.parse(analysisOut);

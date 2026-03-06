@@ -98,3 +98,24 @@ AssembleScene[
   scene = GeometricScene[points, Evaluate @ hypotheses];
   scene
 ];
+
+(* ============ 定性约束构建函数 ============ *)
+
+(* 6. 水平线约束 *)
+BuildHorizontalLine[edge_List] := 
+  GeometricAssertion[Line[edge], "Horizontal"];
+
+(* 7. 顺逆时针约束 *)
+BuildClockwise[points_List] := 
+  GeometricAssertion[points, "Clockwise"];
+
+BuildCounterclockwise[points_List] := 
+  GeometricAssertion[points, "Counterclockwise"];
+
+(* 8. 区域约束：点在多边形内 *)
+BuildPointInPolygon[point_, polyPoints_List] := 
+  Element[point, Region@Polygon[polyPoints]];
+
+(* 9. 区域约束：点在三角形内 *)
+BuildPointInTriangle[point_, triPoints_List] := 
+  Element[point, Region@Triangle[triPoints]];

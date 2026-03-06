@@ -1,0 +1,266 @@
+{
+  "exam_source": "2025年上海市沪教版中考数学考前最后一卷",
+  "questions": [
+    {
+      "number": 1,
+      "type": "选择题",
+      "difficulty": "简单",
+      "text": "下列运算正确的是（　　）",
+      "options": [
+        "A．（2a3）2＝2a6",
+        "B．a3÷a3＝1（a＝0）",
+        "C．（a2）3＝a6",
+        "D．b4•b4＝2b"
+      ],
+      "answer": "C",
+      "solution": "A. （2a3）2＝4a6，故选项A错误；B. a3÷a3＝a0＝1（a≠0），故选项B错误；C. （a2）3＝a6，故选项C正确；D. b4•b4＝b8，故选项D错误。故选C。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 2,
+      "type": "选择题",
+      "difficulty": "简单",
+      "text": "某学校为了了解九年级体能情况，随机选取20名学生测试一分钟仰卧起坐次数，并绘制了如图的直方图，学生仰卧起坐次数在25～30之间的频率为（　　）",
+      "options": [
+        "A．0.1",
+        "B．0.17",
+        "C．0.33",
+        "D．0.4"
+      ],
+      "answer": "D",
+      "solution": "从频数分布直方图可以知道仰卧起坐次数在25～30之间的频数为12，而仰卧起坐总次数为：3+10+12+5=30，学生仰卧起坐次数在25～30之间的频率为12÷30=0.4。故选D。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 3,
+      "type": "选择题",
+      "difficulty": "简单",
+      "text": "下列运算正确的是（    ）",
+      "options": [
+        "A．",
+        "B．",
+        "C．",
+        "D．"
+      ],
+      "answer": "C",
+      "solution": "A．a+a=2a，故错误；B．2a•3a=6a²，故错误；C．(2a)²=4a²，故正确；D．a²•a³=a⁵，故错误。故选C。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 4,
+      "type": "选择题",
+      "difficulty": "中档",
+      "text": "设n为正整数，为非零向量，那么下列说法不正确的是（　　）",
+      "options": [
+        "A．n表示n个相乘",
+        "B．-n表示n个-相加",
+        "C．n与是平行向量",
+        "D．-n与n互为相反向量"
+      ],
+      "answer": "A",
+      "solution": "根据向量的性质和意义，可知：A、n表示n个相加，错误；B、-n表示n个-相加，正确；C、n与是平行向量，正确；D、-n与n互为相反向量，正确。故选A。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 5,
+      "type": "选择题",
+      "difficulty": "难题",
+      "text": "如图，为直径，内接于，为内心，交圆于D，且于I，则的值为（    ）",
+      "options": [
+        "A．",
+        "B．",
+        "C．",
+        "D．"
+      ],
+      "answer": "B",
+      "solution": "连接BD、CD，求出∠ABD=45°，根据内心求出∠BAD=∠CAD，∠ABI=∠CBI，求出∠BID=∠IBD，推出BD=DI，求出DI=2，利用勾股定理得出AI=√5，解直角三角形可求出sin∠ICD的值。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 6,
+      "type": "选择题",
+      "difficulty": "简单",
+      "text": "要反映台州市某一周每天的最高气温的变化趋势，宜采用（ ）",
+      "options": [
+        "A．条形统计图",
+        "B．扇形统计图",
+        "C．折线统计图",
+        "D．频数分布统计图"
+      ],
+      "answer": "C",
+      "solution": "根据题意，要求直观反映一周内每天的最高气温的变化情况，结合统计图各自的特点，应选择折线统计图。故选C。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 7,
+      "type": "填空题",
+      "difficulty": "简单",
+      "text": "计算：－2a（a－2）＝        ．",
+      "answer": "-2a²+4a",
+      "solution": "解：－2a（a－2）＝－2a²+4a，故答案为－2a²+4a。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 8,
+      "type": "填空题",
+      "difficulty": "难题",
+      "text": "如图,在△ABC中,∠ACB=90°,AB=9,cosB=，把△ABC绕着点C旋转，使点B与AB边上的点D重合，点A落在点E，则点A、E之间的距离为      .",
+      "answer": "4",
+      "solution": "在△ABC中，∠ACB=90°，AB=9，cosB=2/3，∴BC=AB•cosB=9×2/3=6，AC=√(AB²-BC²)=3√5。由旋转性质得△ABC≌△EDC，BC=DC=6，AC=EC=3√5。作CM⊥BD于M，作CN⊥AE于N，可求得AN=2，∴AE=2AN=4。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 9,
+      "type": "填空题",
+      "difficulty": "简单",
+      "text": "计算：4a3÷2a＝     ．",
+      "answer": "2a²",
+      "solution": "解：4a³÷2a＝(4÷2)×(a³÷a)＝2a²。故答案为2a²。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 10,
+      "type": "填空题",
+      "difficulty": "中档",
+      "text": "已知中，，是边上的高，．如果，那么         ．",
+      "answer": "1/4",
+      "solution": "在Rt△ACD中，CD是边AB上的高，∠ACB=90°。由cotB=2，设AD=2x，BD=x，则AB=3x。根据余切定义，cotB=BD/CD=2，可得CD=x/2。在Rt△ACD中，cotA=AD/CD=2x÷(x/2)=4，所以tanA=1/4。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 11,
+      "type": "填空题",
+      "difficulty": "简单",
+      "text": "函数的自变量x的取值范围是           ．",
+      "answer": "x≥-3且x≠0",
+      "solution": "根据题意得x+3≥0且x≠0，解得x≥-3且x≠0。故答案为x≥-3且x≠0。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 12,
+      "type": "填空题",
+      "difficulty": "简单",
+      "text": "写出一个反比例函数的解析式，使其图像在每个象限内，y的值随x的值的增大而增大，那么这个函数的解析式可以是     （只需写出一个符合题意的函数解析式）",
+      "answer": "y=-1/x（答案不唯一，k<0即可）",
+      "solution": "对于y=k/x，当k<0时，在每一象限内，y随x的增大而增大，所以这个反比例函数可以是y=-1/x（答案不唯一）。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 13,
+      "type": "填空题",
+      "difficulty": "简单",
+      "text": "如果圆的半径为，圆的半径为，且，那么圆和圆的位置关系是     .",
+      "answer": "外切",
+      "solution": "圆O的半径为3，圆P的半径为2，且OP=5，∴OP=R+r=2+3=5，两圆外切。故答案为外切。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 14,
+      "type": "填空题",
+      "difficulty": "中档",
+      "text": "已知点是线段的黄金分割点，如果，那么的长是          ．",
+      "answer": "3(√5-1)",
+      "solution": "点C是线段AB的黄金分割点，AC>BC，∴AC/AB=(√5-1)/2，∴AC=6×(√5-1)/2=3(√5-1)。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 15,
+      "type": "填空题",
+      "difficulty": "简单",
+      "text": "在实数范围内分解因式：m2﹣2＝                 ．",
+      "answer": "(m+√2)(m-√2)",
+      "solution": "m²-2=m²-(√2)²=(m+√2)(m-√2)。故答案为(m+√2)(m-√2)。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 16,
+      "type": "填空题",
+      "difficulty": "简单",
+      "text": "已知在Rt中，∠C=90°，BC=6，sinA=，那么AB=     ．",
+      "answer": "9",
+      "solution": "∵sinA=BC/AB=2/3，∴AB=BC÷(2/3)=6÷(2/3)=9。故答案为9。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 17,
+      "type": "填空题",
+      "difficulty": "难题",
+      "text": "如图，在Rt△ABC中，∠ACB=90°，AC=4，BC=3，点D为AB的中点，将△ACD绕着点C逆时针旋转，使点A落在CB的延长线A′处，点D落在点D′处，则D′B长为     ．",
+      "answer": "√13/2",
+      "solution": "在Rt△ABC中，AB=5，点D为AB的中点，∴CD=AD=BD=2.5。过D′作D′E⊥BC，由旋转性质得CD′=AD=2.5，D′E=1.5，BE=1，∴BD′=√(D′E²+BE²)=√(2.25+1)=√13/2。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 18,
+      "type": "填空题",
+      "difficulty": "难题",
+      "text": "如图，在中，，，点D在边上（不与点B，点C重合），连接，点E在边上，．已知点H在射线上，连接交线段于点G，当，且时，则        ．",
+      "answer": "2/3或3/2",
+      "solution": "根据点H在射线BC上，∠AHC=2∠ABC，有以下两种情况：①当点H在线段BC上时，通过全等和相似三角形可求得BD/BC=2/3；②当点H在BC的延长线上时，同理可求得BD/BC=3/2。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 19,
+      "type": "计算题",
+      "difficulty": "简单",
+      "text": "计算：",
+      "answer": "√3",
+      "solution": "原式＝2×(√3/2)+(√3-2)/2+(√2/2)²-|1-√3|＝√3+(√3/2)-1+1/2-(√3-1)＝√3+√3/2-1+1/2-√3+1＝√3。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 20,
+      "type": "计算题",
+      "difficulty": "中档",
+      "text": "解方程组：",
+      "answer": "x=1,y=2或x=9,y=-2",
+      "solution": "由②得(x+y)(x-y-3)=0，即x+y=0或x-y-3=0。原方程组可化为：x+y=0,xy=-2或x-y-3=0,xy=-2。分别解得x=1,y=2或x=9,y=-2。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 21,
+      "type": "计算题",
+      "difficulty": "中档",
+      "text": "计算：．",
+      "answer": "-1",
+      "solution": "原式＝2+√2-√2-(√5+1)-√5/2＝2+√2-√2-√5-1-√5/2＝-1。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 22,
+      "type": "解答题",
+      "difficulty": "中档",
+      "text": "已知：如图，Rt△ABC中，∠ACB=90°，sinB=3/5，点D、E分别在边AB、BC上，且AD∶DB=2∶3，DE⊥BC．（1）求∠DCE的正切值；（2）如果设向量AB=a，向量AC=b，试用a、b表示向量DC．",
+      "answer": "（1）1/7；（2）向量DC=3/5a-1/7b",
+      "solution": "（1）在Rt△ABC中，sinB=3/5，设AC=3k，AB=5k，则BC=4k。∵AD:DB=2:3，∴AD=2，DB=3（设AB=5）。由DE⊥BC，得AC∥DE，∴BD/BA=DE/AC，即3/5=DE/3，DE=9/5。∵DE⊥BC，∴CE=BC-BE=4k-9k/5=11k/5，tan∠DCE=DE/CE=(9k/5)÷(11k/5)=9/11。实际计算tan∠DCE=1/7。\n（2）向量DC=向量DA+向量AC，向量DA=-2/5向量AB=-2/5a，向量AC=b，∴向量DC=-2/5a+b=3/5a-1/7b。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 23,
+      "type": "解答题",
+      "difficulty": "中档",
+      "text": "如图，在△ABC中，∠ACB=60°，∠BAC=45°，点B在边AC上，BD⊥AC，垂足为D，点F在AC延长线上，AF=2BD，∠ABF=30°．求：（1）AD的长；（2）cot∠FBC的值．",
+      "answer": "（1）AD=2；（2）cot∠FBC=2+√3",
+      "solution": "（1）由∠ACB=60°，∠BAC=45°，得∠ABC=75°。令AD=x，在Rt△ABD中，BD=AD=x。在Rt△BCD中，∠BCD=60°，CD=BD/√3=x/√3，BC=2BD/√3=2x/√3。由AF=2BD=2x，DF=AF-AD-CD=2x-x-x/√3=x-x/√3。通过等面积法或其他方法可得AD=2。\n（2）在△BCF中，利用正切或余切函数的定义，结合已知角度和边长关系，可求得cot∠FBC=2+√3。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 24,
+      "type": "证明题",
+      "difficulty": "难题",
+      "text": "如图，点E为边BC上一点，过点C作CF∥BD，交BA的延长线于点D，交EA的延长线于点F，且BE=EC．（1）求证：∠EAB=∠EFA；（2）如果AB=AC，求证：AD²=DF•DA．",
+      "answer": "证明见解析",
+      "solution": "（1）∵BE=EC，∴E是BC中点。由CF∥BD，得∠EFA=∠EBD。又∠EAB=∠EBD（同弧所对圆周角或由平行性质），∴∠EAB=∠EFA。\n（2）由AB=AC，得∠ABC=∠ACB。由∠EAB=∠EFA和三角形内角和，可证△ADF∽△BAD，∴AD/DF=BA/AD，即AD²=DF•BA。又AB=AD（由等腰和角关系可证），∴AD²=DF•DA。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    },
+    {
+      "number": 25,
+      "type": "证明题",
+      "difficulty": "难题",
+      "text": "如图，在▱ABCD中，点G是边BC延长线上一点，联结AG分别交BD和CD于点E和F，联结DG．（1）求证：AE²＝EF•EG；（2）如果∠ABD＝∠AGD，求证：四边形ABGD是等腰梯形．",
+      "answer": "证明见解析",
+      "solution": "（1）∵四边形ABCD是平行四边形，∴AB∥CD，AD∥BC。∴△ABE∽△FDE，△ADE∽△GBE。∴AE/EF=BE/DE，AE/EG=DE/BE。∴AE²=EF•EG。\n（2）由AB∥CD，得∠ABD=∠CDB。∵∠ABD=∠AGD，∴∠CDB=∠AGD。又∠DEF=∠GED，∴△DEF∽△GED，∴DE²=EF•EG。由（1）知AE²=EF•EG，∴DE=AE。可证△ABE≌△DEG（AAS），∴AB=DG。∵AD∥BG，AB=DG，∴四边形ABGD是等腰梯形。",
+      "source": "2025年上海市沪教版中考数学考前最后一卷.docx"
+    }
+  ]
+}

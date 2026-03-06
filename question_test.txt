@@ -1,0 +1,203 @@
+q["倍长中线", 1] = 
+	<|
+		"Propositions" -> 
+			{
+				EuclideanDistance[B, D] == EuclideanDistance[C, D],
+				EuclideanDistance[B, E] == EuclideanDistance[C, A],
+				EuclideanDistance[F, E] == EuclideanDistance[F, A]
+			},
+		"Description" -> 
+			{
+				Triangle[{A, B, C}],
+				F \[Element] Line @ {A, C}, D \[Element] Line@{B, C},
+				GeometricAssertion[{Line@{A, D}, Line@{B, F}}, {"Concurrent", E}]
+			},
+		"$" -> 
+			
+	|>;
+	
+q["倍长中线", 2] = 
+	<|
+		"Propositions" -> 
+			{
+				PlanarAngle[A -> {B, D}] == PlanarAngle[A -> {D, C}],
+				EuclideanDistance[E, D] == EuclideanDistance[C, D],
+				EuclideanDistance[E, F] == EuclideanDistance[C, A],
+				GeometricAssertion[{Line@{E, F}, Line@{A, B}}, "Parallel"]
+			},
+		"Description" -> 
+			{
+				PolygonAngle[Triangle[{A, B, C}], A] == 60°,
+				D \[Element] Line@{B, C}, F \[Element] Line @ {A, D}, E \[Element] Line@{B, D}, Line@{E, F}
+			},
+		"$" ->
+			
+	|>;
+	
+q["倍长中线", 3] = 
+	<|
+		"Propositions" -> 
+			{
+				EuclideanDistance[E, D] == EuclideanDistance[E, A],
+				EuclideanDistance[A, B] + EuclideanDistance[C, D] == EuclideanDistance[B, C],
+				GeometricAssertion[{Line@{E, C}, Line@{E, B}}, "Perpendicular"],
+				GeometricAssertion[{Line@{D, C}, Line@{A, B}}, "Parallel"],
+				PlanarAngle[B -> {C, E}] == PlanarAngle[B -> {E, A}],
+				PlanarAngle[C -> {D, E}] == PlanarAngle[C -> {E, B}]
+			},
+		"Description" -> 
+			{
+				Polygon[{A, B, C, D}],
+				E \[Element] Line@{A, D}, Line@{E, C}, Line@{E, B}
+			},
+		"$" ->
+			
+	|>;
+	
+q["倍长中线", 4] = 
+	<|
+		"Propositions" -> 
+			{
+				EuclideanDistance[B, M] == EuclideanDistance[M, C],
+				EuclideanDistance[A, M] == EuclideanDistance[E, F] / 2,
+				GeometricAssertion[{Line@{A, M}, Line@{E, F}}, "Perpendicular"]
+			},
+		"Description" -> 
+			{
+				Triangle@{A, B, C}, GeometricAssertion[{A, C, B}, "Clockwise"],
+				GeometricAssertion[{A, B, D, E}, "Clockwise"], GeometricAssertion[{A, F, G, C}, "Clockwise"],
+				GeometricAssertion[Polygon@{A, B, D, E}, "Regular"], GeometricAssertion[Polygon@{A, F, G, C}, "Regular"], 
+				Line@{E, F}, M \[Element] Line@{B, C}, Line@{A, M}
+			},
+		"$" ->
+			
+	|>;
+	
+q["倍长中线", 5] = 
+	<|
+		"Propositions" -> 
+			{
+				EuclideanDistance[B, M] == EuclideanDistance[M, E],
+				EuclideanDistance[A, B] == EuclideanDistance[A, C],
+				EuclideanDistance[A, D] == EuclideanDistance[A, E],
+				GeometricAssertion[{Line@{A, B}, Line@{A, C}}, "Perpendicular"],
+				GeometricAssertion[{Line@{A, D}, Line@{A, E}}, "Perpendicular"],
+				GeometricAssertion[{Line@{A, M}, Line@{C, D}}, "Perpendicular"]
+			},
+		"Description" -> 
+			{
+				Triangle@{A, B, E}, GeometricAssertion[{A, E, B}, "Clockwise"],
+				Triangle@{A, C, D}, GeometricAssertion[{A, C, D}, "Clockwise"],
+				Line @ {A, M}, M \[Element] Line@{B, E}
+			},
+		"$" ->
+			
+	|>;
+	
+q["倍长中线", 6] = 
+	<|
+		"Propositions" -> 
+			{
+				EuclideanDistance[B, A] == EuclideanDistance[C, A],
+				EuclideanDistance[D, B] == EuclideanDistance[A, B],
+				EuclideanDistance[A, E] == EuclideanDistance[B, E],
+				EuclideanDistance[C, D] == 2 EuclideanDistance[C, E]
+			},
+		"Description" -> 
+			{
+				Triangle@{A, C, D}, GeometricAssertion[{A, C, D}, "Clockwise"],
+				B \[Element] Line@{A, D}, E \[Element] Line@{B, A}, Line@{C, E}, Line@{C, B}
+			},
+		"$" ->
+			,
+		"ErrorConclusions" -> {3}
+	|>;
+	
+q["倍长中线", 7] = 
+	<|
+		"Propositions" -> 
+			{
+				PlanarAngle[B -> {C, E}] == PlanarAngle[B -> {E, A}],
+				EuclideanDistance[A, E] == EuclideanDistance[D, E],
+				EuclideanDistance[C, D] + EuclideanDistance[A, B] == EuclideanDistance[B, C],
+				GeometricAssertion[{Line@{A, B}, Line@{C, D}}, "Parallel"]
+			},
+		"Description" -> 
+			{
+				GeometricAssertion[Polygon@{A, B, C, D}, "Convex"], GeometricAssertion[{A, D, C, B}, "Clockwise"],
+				E \[Element] Line@{A, D}, Line@{B, E}
+			},
+		"$" ->
+			,
+		"ErrorConclusions" -> {3}
+	|>;
+
+q["角平分线",  1] = <|
+	"Propositions" -> 
+		{
+			PlanarAngle[A -> {D, C}] == PlanarAngle[A -> {C, B}],
+			EuclideanDistance[C, D] == EuclideanDistance[C, B],
+			PlanarAngle[B -> {A, C}] + PlanarAngle[D -> {C, A}] == 180°
+		},
+	"Description" -> 
+		{
+			GeometricAssertion[Polygon@{A,B,C,D}, "Convex"], Line @ {A, C}, Line @ {A, D}, Line@{B, C},PlanarAngle[B -> {A, C}] + PlanarAngle[D -> {C, A}] == 180°
+		}
+|>;
+
+q["角平分线",  2] = <|
+	"Propositions" -> 
+		{
+			PlanarAngle[A -> {B, D}] == PlanarAngle[A -> {D, C}],
+			EuclideanDistance[P, C] - EuclideanDistance[P, B] > EuclideanDistance[A, C] - EuclideanDistance[A, B]
+		},
+	"Description" ->
+		{
+			Triangle @ {A,B,C},
+			D \[Element] Line @ {B, C}, P \[Element] Line@{A, D}, Line@{P, B}, Line@{P, C}
+		}
+|>;
+
+q["角平分线",  3] = <|
+	"Propositions" -> 
+		{
+			PlanarAngle[B -> {C, D}] == PlanarAngle[B -> {D, A}],
+			EuclideanDistance[B, C] == EuclideanDistance[A, B] + EuclideanDistance[C, D]
+		},
+	"Description" ->
+		{
+			PolygonAngle[Triangle @ {A,B,C}, A] == 108°,
+			D \[Element] Line @ {A, C}, Line@{B, D}
+		}
+|>;
+
+q["角平分线",  4] = <|
+	"Propositions" -> 
+		{
+			PlanarAngle[A -> {C, D}] == PlanarAngle[A -> {D, B}],
+			PlanarAngle[C -> {B, E}] == PlanarAngle[C -> {E, A}],
+			EuclideanDistance[F, E] == EuclideanDistance[F, D]
+		},
+	"Description" ->
+		{
+			PolygonAngle[Triangle @ {A,B,C}, C] == 90°,
+			PolygonAngle[Triangle @ {A,B,C}, B] == 60°,
+			E \[Element] Line@{A, B}, D \[Element] Line@{B, C},
+			GeometricAssertion[{Line@{C, E}, Line@{A, D}}, {"Concurrent", F}]
+		}
+|>;
+
+q["角平分线",  5] = <|
+	"Propositions" -> 
+		{
+			PlanarAngle[B -> {C, D}] == PlanarAngle[B -> {D, A}],
+			GeometricAssertion[{Line@{B, D}, Line@{C, E}}, "Perpendicular"],
+			EuclideanDistance[B, D] == 2 EuclideanDistance[C, E]
+		},
+	"Description" ->
+		{
+			PolygonAngle[Triangle @ {A,B,C}, A] == 90°,
+			EuclideanDistance[A, B] == EuclideanDistance[A, C],
+			GeometricAssertion[{Line@{C, A}, Line@{B, E}}, {"Concurrent", D}]
+		}
+|>;

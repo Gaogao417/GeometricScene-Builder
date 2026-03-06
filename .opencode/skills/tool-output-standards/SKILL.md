@@ -147,8 +147,8 @@ if (result.status === "ok") {
 
 **TypeScript Parse (geo-tools.ts):**
 ```typescript
-const reportOut = runPython(context.worktree, "scripts/report.py", ["--run_dir", runDir]);
-const analysisOut = runPython(context.worktree, "scripts/analyze.py", ["--run_dir", runDir]);
+const reportOut = runPython(context.worktree, "core/report.py", ["--run_dir", runDir]);
+const analysisOut = runPython(context.worktree, "core/analyze.py", ["--run_dir", runDir]);
 
 return JSON.stringify({
   status: "ok",

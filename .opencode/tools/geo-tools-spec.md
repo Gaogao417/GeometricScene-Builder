@@ -10,7 +10,7 @@ Implementation entry: `geo-tools.ts` (`GeoToolsPlugin`).
   - `out_dir` (string, optional)
   - `problems_path` (string, optional, default `data/problems.jsonl`)
 - Command:
-  - `python scripts/bench.py --config <config_path> --problems <problems_path> [--out <out_dir>]`
+  - `python core/bench.py --config <config_path> --problems <problems_path> [--out <out_dir>]`
 - Success output (JSON string):
   - `{"status":"ok","run_dir":"...","total_cases":123}`
 - Failure output:
@@ -21,8 +21,8 @@ Implementation entry: `geo-tools.ts` (`GeoToolsPlugin`).
 - Input:
   - `run_dir` (string, required)
 - Command:
-  - `python scripts/report.py --run_dir <run_dir>`
-  - `python scripts/analyze.py --run_dir <run_dir>`
+  - `python core/report.py --run_dir <run_dir>`
+  - `python core/analyze.py --run_dir <run_dir>`
 - Success output:
   - `{"status":"ok","report":"...","analysis":"..."}`
 
@@ -43,5 +43,5 @@ Implementation entry: `geo-tools.ts` (`GeoToolsPlugin`).
 
 ## Recommended implementation notes
 - Keep each tool as a thin wrapper around one script.
-- Keep heavy logic in `scripts/` for easier testing.
+- Keep heavy logic in `core/` for easier testing.
 - Use stable run directories (`outputs/run_YYYYMMDD_HHMMSS`).

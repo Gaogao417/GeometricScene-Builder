@@ -2,6 +2,7 @@
 
 Core skills for the final loop:
 - `agent-io-schema`: **canonical data schemas for all agent interactions** (problems.jsonl, sweep.yaml, results.jsonl, ratings.csv)
+- `geo-architecture`: **geometry benchmark agent system architecture** (agent roles, workflow orchestration, artifact contracts)
 - `dimensionless-constraints-library`: reusable constraint recipes and risk levels.
 - `wl-benchmark-runbook`: GeometricScene solve/run best practices.
 - `human-rating-loop`: 1-5 manual scoring workflow and csv schema.
