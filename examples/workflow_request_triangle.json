@@ -1,0 +1,31 @@
+{
+  "request_id": "triangle-altitude-demo",
+  "problem_id": "triangle-altitude-demo",
+  "problem_text": "在三角形 ABC 中，AB = AC，D 是 BC 的中点。请画出从 A 到 BC 的高 AD，帮助学生看清等腰三角形的对称结构。",
+  "grade_or_topic": "初中几何",
+  "teaching_focus": [
+    "突出等腰三角形 ABC",
+    "突出底边 BC 的中点 D",
+    "突出高 AD 与 BC 垂直"
+  ],
+  "diagram_intent": "student_explanation",
+  "diagram_type": "synthetic_geometry",
+  "objects_hint": {
+    "points": ["A", "B", "C", "D"],
+    "segments": [["A", "B"], ["A", "C"], ["B", "C"], ["A", "D"]],
+    "constraints": [
+      "AB = AC",
+      "D is the midpoint of BC",
+      "AD is perpendicular to BC"
+    ]
+  },
+  "output_preferences": {
+    "image_format": "png",
+    "spec_format": "diagram-spec",
+    "label_language": "zh-CN",
+    "allow_schematic_not_to_scale": true
+  },
+  "max_retries": 3,
+  "wolfram_timeout_s": 60,
+  "wolfram_hard_timeout_s": 80
+}

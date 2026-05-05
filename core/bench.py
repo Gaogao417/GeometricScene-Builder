@@ -28,6 +28,9 @@ from typing import Dict, List, Any
 from wolframclient.language.expression import WLSymbol
 import yaml
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from runtime import resolve_wolfram_kernel
+
 # Import constraint builders (core library)
 from core import BuildOrientation, AssembleConstraints, AssembleQualitativeConstraints
 
@@ -395,7 +398,7 @@ def main():
     results_path = out_dir / "results.jsonl"
     results_count = 0
 
-    wl_kernel = "D:/Program Files/Wolfram Research/Wolfram/14.3/wolfram.exe"
+    wl_kernel = resolve_wolfram_kernel(config.get("wl_kernel"))
     timeout = config.get("timeout_s", 60)
     render_images = config.get("render_images", True)
     seeds = config.get("random_seeds", [1])

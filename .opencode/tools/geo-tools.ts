@@ -89,6 +89,115 @@ export const GeoToolsPlugin = async () => {
           return JSON.stringify({ status: "ok", ui: "started", run_dir: runDir }, null, 2);
         },
       }),
+      run_diagram_workflow: tool({
+        description: "Run the full agentic geometry diagram workflow from a request JSON",
+        args: {
+          request_path: tool.schema.string().describe("DiagramRequest JSON path"),
+          out_dir: tool.schema.string().optional().describe("workflow output directory"),
+        },
+        async execute(args, context) {
+          const request = safeResolve(context.worktree, args.request_path);
+          const toolArgs = ["--action", "run", "--request", request];
+          if (args.out_dir) {
+            toolArgs.push("--out", safeResolve(context.worktree, args.out_dir));
+          }
+          return runPython(context.worktree, "core/workflow.py", toolArgs);
+        },
+      }),
+      get_diagram_skill_context: tool({
+        description: "Write the local geometry diagram workflow skill context to JSON for agent inspection",
+        args: {
+          out_dir: tool.schema.string().optional().describe("directory for skills_context.json"),
+        },
+        async execute(args, context) {
+          const toolArgs = ["--action", "skill_context"];
+          if (args.out_dir) {
+            toolArgs.push("--out", safeResolve(context.worktree, args.out_dir));
+          }
+          return runPython(context.worktree, "core/workflow.py", toolArgs);
+        },
+      }),
+      generate_diagram_candidate: tool({
+        description: "Generate one GeometricScene/diagram candidate for a DiagramRequest",
+        args: {
+          request_path: tool.schema.string().describe("DiagramRequest JSON path"),
+          out_dir: tool.schema.string().optional().describe("workflow output directory"),
+          round_index: tool.schema.number().optional().describe("retry round index, default 0"),
+          history_path: tool.schema.string().optional().describe("previous workflow_result.json or history JSON"),
+        },
+        async execute(args, context) {
+          const request = safeResolve(context.worktree, args.request_path);
+          const toolArgs = [
+            "--action",
+            "generate",
+            "--request",
+            request,
+            "--round-index",
+            String(args.round_index ?? 0),
+          ];
+          if (args.out_dir) {
+            toolArgs.push("--out", safeResolve(context.worktree, args.out_dir));
+          }
+          if (args.history_path) {
+            toolArgs.push("--history", safeResolve(context.worktree, args.history_path));
+          }
+          return runPython(context.worktree, "core/workflow.py", toolArgs);
+        },
+      }),
+      render_diagram_candidate: tool({
+        description: "Render one generated scene_payload.json through Wolfram",
+        args: {
+          request_path: tool.schema.string().describe("DiagramRequest JSON path"),
+          scene_payload_path: tool.schema.string().describe("scene_payload.json path"),
+          out_dir: tool.schema.string().optional().describe("workflow output directory"),
+          round_index: tool.schema.number().optional().describe("retry round index, default 0"),
+        },
+        async execute(args, context) {
+          const request = safeResolve(context.worktree, args.request_path);
+          const scenePayload = safeResolve(context.worktree, args.scene_payload_path);
+          const toolArgs = [
+            "--action",
+            "render",
+            "--request",
+            request,
+            "--scene-payload",
+            scenePayload,
+            "--round-index",
+            String(args.round_index ?? 0),
+          ];
+          if (args.out_dir) {
+            toolArgs.push("--out", safeResolve(context.worktree, args.out_dir));
+          }
+          return runPython(context.worktree, "core/workflow.py", toolArgs);
+        },
+      }),
+      evaluate_diagram_image: tool({
+        description: "Evaluate one rendered diagram image with the configured vision model",
+        args: {
+          request_path: tool.schema.string().describe("DiagramRequest JSON path"),
+          render_result_path: tool.schema.string().describe("render_result.json path"),
+          out_dir: tool.schema.string().optional().describe("workflow output directory"),
+          round_index: tool.schema.number().optional().describe("retry round index, default 0"),
+        },
+        async execute(args, context) {
+          const request = safeResolve(context.worktree, args.request_path);
+          const renderResult = safeResolve(context.worktree, args.render_result_path);
+          const toolArgs = [
+            "--action",
+            "evaluate",
+            "--request",
+            request,
+            "--render-result",
+            renderResult,
+            "--round-index",
+            String(args.round_index ?? 0),
+          ];
+          if (args.out_dir) {
+            toolArgs.push("--out", safeResolve(context.worktree, args.out_dir));
+          }
+          return runPython(context.worktree, "core/workflow.py", toolArgs);
+        },
+      }),
     },
   };
 };

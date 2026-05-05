@@ -41,6 +41,9 @@ Thumbs.db
 outputs/
 node_modules/
 *.log
+.env
+.env.local
+.env.*.local
 
 # Wolfram
 *.mx

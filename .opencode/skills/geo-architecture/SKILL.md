@@ -7,6 +7,13 @@ description: Use this skill when understanding or working with the geometry benc
 
 This skill describes the geometry benchmark agent system structure and orchestration patterns.
 
+The project now has two modes:
+
+- Benchmark mode: compare constraint recipes across a problem set.
+- Single-diagram mode: generate one teaching-oriented diagram through the agentic render/evaluate/retry loop.
+
+Use benchmark mode for experiments and recipe analysis. Use single-diagram mode when `teaching_skills` or another caller needs a diagram package for one problem.
+
 ## Agents
 
 ### Prime Agent
@@ -58,6 +65,7 @@ Each agent must write machine-readable artifacts and return exact paths.
 
 ## Skills Bound to This Architecture
 
+- `agentic-geometry-workflow`: Single-problem diagram loop using opencode agents, tools, VLM evaluation, and bounded retries
 - `dimensionless-constraints-library`: Reusable constraint recipes and risk levels
 - `wl-benchmark-runbook`: GeometricScene solve/run best practices
 - `human-rating-loop`: 1-5 manual scoring workflow and csv schema
@@ -69,6 +77,8 @@ Each agent must write machine-readable artifacts and return exact paths.
 - `run_sweep(config_path, out_dir?, problems_path?)`: Execute benchmark sweep
 - `launch_rater(run_dir)`: Launch Streamlit scoring UI
 - `build_report(run_dir)`: Generate report.md, report.html, and analysis_report.html
+- `run_diagram_workflow(request_path, out_dir?)`: Execute single-problem diagram generation loop
+- `generate_diagram_candidate(...)`, `render_diagram_candidate(...)`, `evaluate_diagram_image(...)`: Debug or manually orchestrate one attempt at a time
 
 ## Key Design Principles
 
